@@ -1,0 +1,34 @@
+ESP32 API CONTRACT — starter specification
+===========================================
+
+The Android app expects:
+
+GET http://<ESP32-IP>/api/status
+Example JSON:
+{
+  "water_c": 62.4,
+  "room_c": 21.8,
+  "pellets_kg": 3.25,
+  "mode": "HEATING",
+  "message": "All sensors OK"
+}
+
+POST http://<ESP32-IP>/api/command
+Content-Type: application/json
+
+Examples:
+{"command":"start"}
+{"command":"stop"}
+{"command":"pump_toggle"}
+{"command":"set_target","value":60}
+
+IMPORTANT SAFETY REQUIREMENTS
+- This file is an API contract, not a complete stove controller.
+- Do not connect GPIO directly to mains voltage, auger motors, fans, or heater elements.
+- Use properly rated isolated drivers/relays and retain the stove's original safety controller.
+- The ESP32 firmware must independently check sensor plausibility, over-temperature,
+  flame/ignition state, pump interlocks and watchdog/timeouts.
+- STOP should mean a safe shutdown request, not abruptly cutting power if the stove
+  requires a controlled burn-down/cooling cycle.
+- Never implement unattended ignition until the exact stove model and its safety design
+  have been reviewed.
